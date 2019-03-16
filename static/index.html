@@ -1,0 +1,34 @@
+<html>
+  <head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type"/>
+    <style>
+      body { background-color: #999; }
+
+      @keyframes details {
+        from {
+          background-color: #FFF;
+        }
+        to {
+          background-color: #FAFAFA;
+        }
+      }
+      .details {
+        display: block;
+        /* animation: details 1s; */
+        /* animation-iteration-count: 10; */
+      }
+
+      .todo-item {
+        transition: all ease 0.3s;
+        color: black;
+      }
+      .todo-item-hovered {
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <script src='./index.js'></script>
+    <div id="app"></div>
+  </body>
+</html>
