@@ -2,10 +2,9 @@ watch :
 	cargo watch -x fmt -s 'make build' -w src -w ../smithy/
 
 build :
-	rm -rf dist
 	mkdir -p dist
-	cargo +nightly build --target wasm32-unknown-unknown
-	wasm-bindgen target/wasm32-unknown-unknown/debug/smithy_site_routing.wasm --out-dir ./dist
+	cargo +nightly build --release --target wasm32-unknown-unknown
+	wasm-bindgen target/wasm32-unknown-unknown/release/smithy_site_routing.wasm --out-dir ./dist
 
 build_prod :
 	rm -rf dist
