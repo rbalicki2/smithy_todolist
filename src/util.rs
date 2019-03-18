@@ -5,7 +5,6 @@ use js_sys::{
 
 use web_sys::{
   Document,
-  Element,
   Window,
 };
 

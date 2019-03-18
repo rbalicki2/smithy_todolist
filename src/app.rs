@@ -1,38 +1,35 @@
 use crate::{
-  types::{
-    AppState,
-    Page,
-  },
-  util,
+  home,
+  types::AppState,
 };
 use smithy::{
   smd,
   types::Component,
 };
-use std::{
-  cell::RefCell,
-  rc::Rc,
-};
 
-pub fn render(app_state: AppState) -> impl smithy::types::Component {
-  let app_state = Rc::new(RefCell::new(app_state));
-
+pub fn render(mut app_state: AppState) -> impl smithy::types::Component {
   smd!(
     on_hash_change={|_| {
-      app_state.borrow_mut().handle_hash_change();
+      app_state.handle_hash_change();
     }};
-    {
-      let app_state_2 = app_state.clone();
-      match app_state.borrow().get_current_page() {
-        Page::Home => smd!(<div
-          on_click={|_| {
-            app_state_2.borrow_mut().transition_to(1);
-          }}
-        >
-          home page
-        </div>),
-        Page::UserDetail(user_id) => smd!(<div>detail view</div>),
+    <style>{r"
+      .home-page, .user-detail-page {
+        display: none;
       }
-    }
+      .home-page-visible .home-page {
+        display: block;
+      }
+      .user-detail-page-visible .user-detail-page {
+        display: block;
+      }
+    "}</style>
+    <div class={app_state.get_current_page().to_class_name()}>
+      <div class="home-page">
+        { home::render_home(|user_id: usize| app_state.transition_to(user_id)) }
+      </div>
+      <div class="user-detail-page">
+        user detail page
+      </div>
+    </div>
   )
 }

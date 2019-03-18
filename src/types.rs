@@ -8,6 +8,15 @@ pub enum Page {
   UserDetail(UserId),
 }
 
+impl Page {
+  pub fn to_class_name(&self) -> &'static str {
+    match self {
+      Page::Home => "home-page-visible",
+      Page::UserDetail(_) => "user-detail-page-visible",
+    }
+  }
+}
+
 #[derive(Debug)]
 pub struct AppState {
   current_page: Page,
@@ -15,7 +24,7 @@ pub struct AppState {
 
 impl AppState {
   pub fn new() -> AppState {
-    // TODO should I combine these?
+    // TODO should I combine these steps?
     let mut app_state = AppState {
       current_page: Page::Home,
     };
@@ -28,6 +37,7 @@ impl AppState {
   }
 
   pub fn transition_to(&mut self, id: UserId) {
+    let _ = get_window().location().set_hash(&id.to_string());
     *self = AppState {
       current_page: Page::UserDetail(id),
     };

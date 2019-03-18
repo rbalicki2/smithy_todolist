@@ -13,6 +13,7 @@ use web_sys::{
 mod util;
 
 mod app;
+mod home;
 mod types;
 
 #[wasm_bindgen]
