@@ -13,22 +13,19 @@ pub fn render(mut app_state: AppState) -> impl smithy::types::Component {
       app_state.handle_hash_change();
     }};
     <style>{r"
-      .home-page, .user-detail-page {
+      .home-page, .todo-list-detail-page {
         display: none;
       }
-      .home-page-visible .home-page {
-        display: block;
-      }
-      .user-detail-page-visible .user-detail-page {
+      .home-page-visible .home-page, .todo-list-detail-page-visible .todo-list-detail-page {
         display: block;
       }
     "}</style>
     <div class={app_state.get_current_page().to_class_name()}>
       <div class="home-page">
-        { home::render_home(|user_id: usize| app_state.transition_to(user_id)) }
+        { home::render_home(|todo_list_id: usize| app_state.transition_to(todo_list_id)) }
       </div>
-      <div class="user-detail-page">
-        user detail page
+      <div class="todo-list-detail-page">
+        todo list detail page
       </div>
     </div>
   )

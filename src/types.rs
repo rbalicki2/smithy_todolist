@@ -1,18 +1,18 @@
 use crate::util::get_window;
 
-type UserId = usize;
+type TodoListId = usize;
 
 #[derive(Debug)]
 pub enum Page {
   Home,
-  UserDetail(UserId),
+  TodoListDetail(TodoListId),
 }
 
 impl Page {
   pub fn to_class_name(&self) -> &'static str {
     match self {
       Page::Home => "home-page-visible",
-      Page::UserDetail(_) => "user-detail-page-visible",
+      Page::TodoListDetail(_) => "todo-list-detail-page-visible",
     }
   }
 }
@@ -36,27 +36,27 @@ impl AppState {
     &self.current_page
   }
 
-  pub fn transition_to(&mut self, id: UserId) {
+  pub fn transition_to(&mut self, id: TodoListId) {
     let _ = get_window().location().set_hash(&id.to_string());
     *self = AppState {
-      current_page: Page::UserDetail(id),
+      current_page: Page::TodoListDetail(id),
     };
   }
 
   pub fn handle_hash_change(&mut self) {
-    if let Some(user_id) = get_current_user_id_from_hash() {
-      self.current_page = Page::UserDetail(user_id);
+    if let Some(todo_list_id) = get_current_todo_list_id_from_hash() {
+      self.current_page = Page::TodoListDetail(todo_list_id);
     } else {
       self.current_page = Page::Home;
     }
   }
 }
 
-fn get_current_user_id_from_hash() -> Option<UserId> {
+fn get_current_todo_list_id_from_hash() -> Option<TodoListId> {
   get_window()
     .location()
     .hash()
     .ok()
     .map(|hash_with_hash| hash_with_hash.chars().skip(1).collect::<String>())
-    .and_then(|hash| hash.parse::<UserId>().ok())
+    .and_then(|hash| hash.parse::<TodoListId>().ok())
 }
