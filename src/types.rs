@@ -17,9 +17,26 @@ impl Page {
   }
 }
 
+// TODO wrap these id's in a newtype
+type TodoItemId = usize;
+#[derive(Debug, Clone)]
+pub struct TodoItem {
+  todo_item_id: TodoItemId,
+  completed: bool,
+  description: String,
+}
+
+#[derive(Debug, Clone)]
+pub struct TodoList {
+  pub name: String,
+  pub todo_list_id: TodoListId,
+  pub todo_items: Vec<TodoItem>,
+}
+
 #[derive(Debug)]
 pub struct AppState {
-  current_page: Page,
+  pub current_page: Page,
+  pub todo_lists: Vec<TodoList>,
 }
 
 impl AppState {
@@ -27,20 +44,21 @@ impl AppState {
     // TODO should I combine these steps?
     let mut app_state = AppState {
       current_page: Page::Home,
+      todo_lists: vec![
+        TodoList {
+          name: "Shopping".into(),
+          todo_list_id: 0,
+          todo_items: vec![],
+        },
+        TodoList {
+          name: "Housework".into(),
+          todo_list_id: 1,
+          todo_items: vec![],
+        },
+      ],
     };
     app_state.handle_hash_change();
     app_state
-  }
-
-  pub fn get_current_page(&self) -> &Page {
-    &self.current_page
-  }
-
-  pub fn transition_to(&mut self, id: TodoListId) {
-    let _ = get_window().location().set_hash(&id.to_string());
-    *self = AppState {
-      current_page: Page::TodoListDetail(id),
-    };
   }
 
   pub fn handle_hash_change(&mut self) {

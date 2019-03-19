@@ -1,14 +1,23 @@
+use crate::types::TodoList;
 use smithy::{
   smd,
-  types::SmithyComponent,
+  types::{
+    Component,
+    SmithyComponent,
+  },
 };
 
-pub fn render_home<'a>(mut transition_to: impl FnMut(usize) + 'a) -> SmithyComponent<'a> {
+pub fn render_home_page<'a>(todo_lists: &'a Vec<TodoList>) -> SmithyComponent<'a> {
   smd!(
-    <div
-      on_click={|_| transition_to(3)}
-    >
-      home page byah
-    </div>
+    <h1>Todo Lists</h1>
+    <ul>
+      {
+        todo_lists.iter().map(|todo_list| {
+          smd!(<li>
+            <a href={format!("#{}", todo_list.todo_list_id)}>{&todo_list.name}</a>
+          </li>)
+        }).collect::<Vec<SmithyComponent>>()
+      }
+    </ul>
   )
 }

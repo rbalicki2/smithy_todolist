@@ -2,7 +2,8 @@
   proc_macro_hygiene,
   slice_patterns,
   custom_attribute,
-  extern_crate_item_prelude
+  extern_crate_item_prelude,
+  bind_by_move_pattern_guards
 )]
 
 use wasm_bindgen::prelude::*;
@@ -10,11 +11,12 @@ use web_sys::{
   Document,
   Element,
 };
-mod util;
 
 mod app;
+mod detail_view;
 mod home;
 mod types;
+mod util;
 
 #[wasm_bindgen]
 pub fn start(div_id: String) {

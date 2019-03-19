@@ -1,6 +1,10 @@
 use crate::{
+  detail_view,
   home,
-  types::AppState,
+  types::{
+    AppState,
+    Page,
+  },
 };
 use smithy::{
   smd,
@@ -12,21 +16,15 @@ pub fn render(mut app_state: AppState) -> impl smithy::types::Component {
     on_hash_change={|_| {
       app_state.handle_hash_change();
     }};
-    <style>{r"
-      .home-page, .todo-list-detail-page {
-        display: none;
+    {
+      match app_state.current_page {
+        Page::Home => {
+          home::render_home_page(&app_state.todo_lists)
+        },
+        Page::TodoListDetail(id) => {
+          detail_view::render_detail_view_page()
+        },
       }
-      .home-page-visible .home-page, .todo-list-detail-page-visible .todo-list-detail-page {
-        display: block;
-      }
-    "}</style>
-    <div class={app_state.get_current_page().to_class_name()}>
-      <div class="home-page">
-        { home::render_home(|todo_list_id: usize| app_state.transition_to(todo_list_id)) }
-      </div>
-      <div class="todo-list-detail-page">
-        todo list detail page
-      </div>
-    </div>
+    }
   )
 }
