@@ -9,10 +9,11 @@ pub enum Page {
 }
 
 impl Page {
-  pub fn to_class_name(&self) -> &'static str {
-    match self {
-      Page::Home => "home-page-visible",
-      Page::TodoListDetail(_) => "todo-list-detail-page-visible",
+  pub fn handle_hash_change(&mut self) {
+    if let Some(todo_list_id) = get_current_todo_list_id_from_hash() {
+      *self = Page::TodoListDetail(todo_list_id);
+    } else {
+      *self = Page::Home;
     }
   }
 }
@@ -42,8 +43,10 @@ pub struct AppState {
 impl AppState {
   pub fn new() -> AppState {
     // TODO should I combine these steps?
-    let mut app_state = AppState {
-      current_page: Page::Home,
+    let mut current_page = Page::Home;
+    current_page.handle_hash_change();
+    let app_state = AppState {
+      current_page,
       todo_lists: vec![
         TodoList {
           name: "Shopping".into(),
@@ -57,16 +60,7 @@ impl AppState {
         },
       ],
     };
-    app_state.handle_hash_change();
     app_state
-  }
-
-  pub fn handle_hash_change(&mut self) {
-    if let Some(todo_list_id) = get_current_todo_list_id_from_hash() {
-      self.current_page = Page::TodoListDetail(todo_list_id);
-    } else {
-      self.current_page = Page::Home;
-    }
   }
 }
 
