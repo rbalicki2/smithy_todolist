@@ -1,6 +1,24 @@
 use crate::util::get_window;
+use std::collections::HashMap;
 
-type TodoListId = usize;
+pub type TodoListId = usize;
+
+pub type TodoListHash = HashMap<TodoListId, TodoList>;
+#[derive(Debug)]
+pub struct TodoLists(TodoListHash);
+
+impl std::ops::Deref for TodoLists {
+  type Target = TodoListHash;
+  fn deref(&self) -> &Self::Target {
+    &self.0
+  }
+}
+
+impl std::ops::DerefMut for TodoLists {
+  fn deref_mut(&mut self) -> &mut Self::Target {
+    &mut self.0
+  }
+}
 
 #[derive(Debug)]
 pub enum Page {
@@ -20,24 +38,24 @@ impl Page {
 
 // TODO wrap these id's in a newtype
 type TodoItemId = usize;
-#[derive(Debug, Clone)]
+#[derive(Debug)]
 pub struct TodoItem {
-  todo_item_id: TodoItemId,
-  completed: bool,
-  description: String,
+  pub todo_item_id: TodoItemId,
+  pub completed: bool,
+  pub description: String,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug)]
 pub struct TodoList {
   pub name: String,
-  pub todo_list_id: TodoListId,
-  pub todo_items: Vec<TodoItem>,
+  pub items: Vec<TodoItem>,
 }
 
 #[derive(Debug)]
 pub struct AppState {
   pub current_page: Page,
-  pub todo_lists: Vec<TodoList>,
+  // pub todo_lists: Vec<TodoList>,
+  pub todo_lists: TodoLists,
 }
 
 impl AppState {
@@ -47,18 +65,17 @@ impl AppState {
     current_page.handle_hash_change();
     let app_state = AppState {
       current_page,
-      todo_lists: vec![
-        TodoList {
-          name: "Shopping".into(),
-          todo_list_id: 0,
-          todo_items: vec![],
-        },
-        TodoList {
-          name: "Housework".into(),
-          todo_list_id: 1,
-          todo_items: vec![],
-        },
-      ],
+      todo_lists: TodoLists({
+        let mut map = HashMap::new();
+        map.insert(
+          0,
+          TodoList {
+            name: "Housework".into(),
+            items: vec![],
+          },
+        );
+        map
+      }),
     };
     app_state
   }

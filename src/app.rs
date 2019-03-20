@@ -26,7 +26,7 @@ pub fn render(app_state: AppState) -> impl smithy::types::Component {
           home::render_home_page(&todo_lists)
         },
         Page::TodoListDetail(id) => {
-          detail_view::render_detail_view_page(&mut todo_lists)
+          detail_view::render_detail_view_page(&mut todo_lists, id)
         },
       }
     }
