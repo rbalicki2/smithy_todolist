@@ -9,7 +9,7 @@ crate-type = ["cdylib"]
 
 [dependencies]
 wasm-bindgen = { version = "< 0.2.39", features = ["nightly", "serde-serialize"] }
-smithy = { path = "../smithy/crates/smithy", features = ["mouse-events"] }
+smithy = { path = "../smithy/crates/smithy", features = ["mouse-events", "input-events"] }
 web-sys = { version = "0.3.5", features = [
   "console",
   "Document",

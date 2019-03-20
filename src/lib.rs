@@ -15,6 +15,7 @@ use web_sys::{
 mod app;
 mod detail_view;
 mod home;
+mod input;
 mod types;
 mod util;
 
