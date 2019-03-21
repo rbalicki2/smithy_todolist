@@ -37,10 +37,10 @@ pub fn render_item_view<'a>(todo_list: &'a mut TodoList, id: TodoListId) -> Smit
     text,
     |x| x,
     move |description| {
-      web_sys::console::log_1(&wasm_bindgen::JsValue::from_str(&format!(
-        "desc = {}",
-        description
-      )));
+      // web_sys::console::log_1(&wasm_bindgen::JsValue::from_str(&format!(
+      //   "desc = {}",
+      //   description
+      // )));
       *text_value.borrow_mut() = "".into();
       todo_list_2.borrow_mut().items.push(TodoItem {
         todo_item_id: 0,

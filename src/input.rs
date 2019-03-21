@@ -28,10 +28,10 @@ pub fn render_input<'a>(
   let mut dom_ref_inner: Option<web_sys::HtmlElement> = None;
   smd!(
     post_render={|| {
-      web_sys::console::log_1(&wasm_bindgen::JsValue::from_str(&format!(
-        "post render!!!! value = {} <-",
-        &*value.borrow()
-      )));
+      // web_sys::console::log_1(&wasm_bindgen::JsValue::from_str(&format!(
+      //   "post render!!!! value = {} <-",
+      //   &*value.borrow()
+      // )));
       if let Some(el) = &dom_ref_inner {
         let el: &web_sys::HtmlInputElement = el.unchecked_ref();
         el.set_value(&*value.borrow());
@@ -47,9 +47,9 @@ pub fn render_input<'a>(
         let mut value = value.borrow_mut();
         *value = new_val;
 
-        web_sys::console::log_1(&wasm_bindgen::JsValue::from_str(&format!(
-          "on input!!!",
-        )));
+        // web_sys::console::log_1(&wasm_bindgen::JsValue::from_str(&format!(
+        //   "on input!!!",
+        // )));
       }}
       on_key_down={|e: &KeyboardEvent| {
         if e.key_code() == ENTER_KEY {
