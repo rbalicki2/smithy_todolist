@@ -9,7 +9,11 @@ crate-type = ["cdylib"]
 
 [dependencies]
 wasm-bindgen = { version = "< 0.2.39", features = ["nightly", "serde-serialize"] }
-smithy = { path = "../smithy/crates/smithy", features = ["mouse-events", "input-events", "debug-logs"] }
+smithy = { path = "../smithy/crates/smithy", features = [
+  "mouse-events",
+  "input-events",
+  # "debug-logs",
+] }
 web-sys = { version = "0.3.5", features = [
   "console",
   "Document",
@@ -26,6 +30,7 @@ js-sys = "0.3.5"
 serde = "1.0.84"
 serde_derive = "1.0.84"
 serde_json = "1.0.34"
+lazy_static = "1.2.0"
 
 [replace]
 "proc-macro2:0.4.27" = { path = "../smithy/crates/proc-macro2" }
