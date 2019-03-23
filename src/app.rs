@@ -15,7 +15,6 @@ pub fn render(app_state: AppState) -> impl smithy::types::Component {
   let AppState {
     mut current_page,
     mut todo_lists,
-    mut input_dom_ref,
   } = app_state;
   smd!(
     on_hash_change={|_| {
@@ -26,8 +25,8 @@ pub fn render(app_state: AppState) -> impl smithy::types::Component {
         Page::Home => {
           home::render_home_page(&todo_lists)
         },
-        Page::TodoListDetail((ref id, ref mut input_text)) => {
-          detail_view::render_detail_view_page(&mut todo_lists, *id, &mut input_dom_ref, input_text)
+        Page::TodoListDetail((ref id, ref mut input_dom_ref, ref mut input_text)) => {
+          detail_view::render_detail_view_page(&mut todo_lists, *id, input_dom_ref, input_text)
         },
       }
     }

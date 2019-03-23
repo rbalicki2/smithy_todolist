@@ -37,17 +37,14 @@ pub fn render_item_view<'a>(
   let todo_list = Rc::new(RefCell::new(todo_list));
   let todo_list_2 = todo_list.clone();
 
-  // let mut text = Rc::new(RefCell::new("".to_string()));
-  let text_value = input_text.clone();
-  // let mut input_dom_ref: Option<web_sys::HtmlElement> = None;
+  let input_text_2 = input_text.clone();
   let mut input = crate::input::render_input(
     input_text,
-    |x| x,
+    |x| if x == "foo" { "bar".to_string() } else { x },
     move |description| {
       // on_enter
-      *text_value.borrow_mut() = "".into();
+      *input_text_2.borrow_mut() = "".into();
       todo_list_2.borrow_mut().items.push(TodoItem {
-        todo_item_id: 0,
         completed: false,
         description,
       });
@@ -59,13 +56,7 @@ pub fn render_item_view<'a>(
     <ul>
       {
         todo_list.borrow().items.iter().map(|todo_item| smd!(<li>
-          {
-            if todo_item.completed {
-              "x"
-            } else {
-              " "
-            }
-          }
+          { if todo_item.completed { "x" } else { " " } }
           { &todo_item.description }
         </li>)).collect::<Vec<SmithyComponent>>()
       }

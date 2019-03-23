@@ -27,13 +27,19 @@ impl std::ops::DerefMut for TodoLists {
 #[derive(Debug)]
 pub enum Page {
   Home,
-  TodoListDetail((TodoListId, Rc<RefCell<String>>)),
+  TodoListDetail(
+    (
+      TodoListId,
+      Option<web_sys::HtmlElement>,
+      Rc<RefCell<String>>,
+    ),
+  ),
 }
 
 impl Page {
   pub fn handle_hash_change(&mut self) {
     if let Some(todo_list_id) = get_current_todo_list_id_from_hash() {
-      *self = Page::TodoListDetail((todo_list_id, Rc::new(RefCell::new("".to_string()))));
+      *self = Page::TodoListDetail((todo_list_id, None, Rc::new(RefCell::new("".to_string()))));
     } else {
       *self = Page::Home;
     }
@@ -44,7 +50,6 @@ impl Page {
 type TodoItemId = usize;
 #[derive(Debug)]
 pub struct TodoItem {
-  pub todo_item_id: TodoItemId,
   pub completed: bool,
   pub description: String,
 }
@@ -60,7 +65,6 @@ pub struct AppState {
   pub current_page: Page,
   // pub todo_lists: Vec<TodoList>,
   pub todo_lists: TodoLists,
-  pub input_dom_ref: Option<web_sys::HtmlElement>,
 }
 
 impl AppState {
@@ -76,12 +80,30 @@ impl AppState {
           0,
           TodoList {
             name: "Housework".into(),
-            items: vec![],
+            items: vec![TodoItem {
+              completed: false,
+              description: "Do the dishes".into(),
+            }],
+          },
+        );
+        map.insert(
+          1,
+          TodoList {
+            name: "Programming".into(),
+            items: vec![
+              TodoItem {
+                completed: false,
+                description: "Learn Rust".into(),
+              },
+              TodoItem {
+                completed: false,
+                description: "Build a site with Smithy".into(),
+              },
+            ],
           },
         );
         map
       }),
-      input_dom_ref: None,
     };
     app_state
   }
