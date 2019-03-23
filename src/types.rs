@@ -90,7 +90,7 @@ impl AppState {
             name: "Programming".into(),
             items: vec![
               TodoItem {
-                completed: false,
+                completed: true,
                 description: "Learn Rust".into(),
               },
               TodoItem {

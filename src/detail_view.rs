@@ -59,10 +59,25 @@ pub fn render_item_view<'a>(
     <h1>{ &todo_list.borrow().name }</h1>
     <ul>
       {
-        todo_list.borrow().items.iter().map(|todo_item| smd!(<li>
-          { if todo_item.completed { "x" } else { " " } }
-          { &todo_item.description }
-        </li>)).collect::<Vec<SmithyComponent>>()
+        todo_list.borrow_mut().items.iter_mut().map(|todo_item|
+          smd!(<li
+            on_click={|_| {
+              todo_item.completed = !todo_item.completed;
+            }}
+            style={r"
+              cursor: pointer;
+            "}
+          >
+            {
+              let description = &todo_item.description;
+              if todo_item.completed {
+                smd!(<i>{ description }</i>)
+              } else {
+                smd!({ description })
+              }
+            }
+          </li>)
+        ).collect::<Vec<SmithyComponent>>()
       }
     </ul>
     { &mut input }
