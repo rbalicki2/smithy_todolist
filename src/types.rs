@@ -1,4 +1,8 @@
 use crate::util::get_window;
+use serde_derive::{
+  Deserialize,
+  Serialize,
+};
 use std::{
   cell::RefCell,
   collections::HashMap,
@@ -8,7 +12,7 @@ use std::{
 pub type TodoListId = usize;
 
 pub type TodoListHash = HashMap<TodoListId, TodoList>;
-#[derive(Debug)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct TodoLists(TodoListHash);
 
 impl std::ops::Deref for TodoLists {
@@ -69,19 +73,18 @@ impl Page {
   }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct TodoItem {
   pub completed: bool,
   pub description: String,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct TodoList {
   pub name: String,
   pub items: Vec<TodoItem>,
 }
 
-#[derive(Debug)]
 pub struct AppState {
   pub current_page: Page,
   // pub todo_lists: Vec<TodoList>,
