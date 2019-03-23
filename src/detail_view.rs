@@ -58,8 +58,47 @@ pub fn render_item_view<'a>(
     },
     input_dom_ref,
   );
+  let showing_clone = showing.clone();
+  let get_button_class = move |new_showing: Showing| {
+    if new_showing == showing_clone {
+      "detail_view_button active"
+    } else {
+      "detail_view_button inactive"
+    }
+  };
+
   smd!(
+    <style type="text/css">{r"
+      .active {
+        text-decoration: underline;
+      }
+      .detail_view_button {
+        border: none;
+        cursor: pointer;
+      }
+      .detail_view_button:focus {
+        outline: 0;
+      }
+    "}</style>
     <h1>{ &todo_list.borrow().name }</h1>
+    <button
+      on_click={|_| *showing = Showing::Complete}
+      class={get_button_class(Showing::Complete)}
+    >
+      Complete
+    </button>
+    <button
+      on_click={|_| *showing = Showing::Incomplete}
+      class={get_button_class(Showing::Incomplete)}
+    >
+      Incomplete
+    </button>
+    <button
+      on_click={|_| *showing = Showing::All}
+      class={get_button_class(Showing::All)}
+    >
+      All
+    </button>
     <ul>
       {
         todo_list.borrow_mut().items.iter_mut()
@@ -67,20 +106,16 @@ pub fn render_item_view<'a>(
         .map(|todo_item|
           smd!(<li
             on_click={|_| {
+              web_sys::console::log_1(&wasm_bindgen::JsValue::from_str(&format!("completed {}", todo_item.completed)));
               todo_item.completed = !todo_item.completed;
             }}
-            style={r"
+            style={format!(r"
               cursor: pointer;
-            "}
+              user-select: none;
+              font-style: {};
+            ", if todo_item.completed { "italic" } else { "normal" })}
           >
-            {
-              let description = &todo_item.description;
-              if todo_item.completed {
-                smd!(<i>{ description }</i>)
-              } else {
-                smd!({ description })
-              }
-            }
+            { &todo_item.description }
           </li>)
         ).collect::<Vec<SmithyComponent>>()
       }

@@ -24,7 +24,7 @@ impl std::ops::DerefMut for TodoLists {
   }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Eq, PartialEq, Clone)]
 pub enum Showing {
   All,
   Complete,
