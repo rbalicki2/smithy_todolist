@@ -1,5 +1,9 @@
 use crate::util::get_window;
-use std::collections::HashMap;
+use std::{
+  cell::RefCell,
+  collections::HashMap,
+  rc::Rc,
+};
 
 pub type TodoListId = usize;
 
@@ -23,13 +27,13 @@ impl std::ops::DerefMut for TodoLists {
 #[derive(Debug)]
 pub enum Page {
   Home,
-  TodoListDetail(TodoListId),
+  TodoListDetail((TodoListId, Rc<RefCell<String>>)),
 }
 
 impl Page {
   pub fn handle_hash_change(&mut self) {
     if let Some(todo_list_id) = get_current_todo_list_id_from_hash() {
-      *self = Page::TodoListDetail(todo_list_id);
+      *self = Page::TodoListDetail((todo_list_id, Rc::new(RefCell::new("".to_string()))));
     } else {
       *self = Page::Home;
     }
@@ -56,6 +60,7 @@ pub struct AppState {
   pub current_page: Page,
   // pub todo_lists: Vec<TodoList>,
   pub todo_lists: TodoLists,
+  pub dom_ref_inner: Option<web_sys::HtmlElement>,
 }
 
 impl AppState {
@@ -76,6 +81,7 @@ impl AppState {
         );
         map
       }),
+      dom_ref_inner: None,
     };
     app_state
   }
