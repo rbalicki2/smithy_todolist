@@ -105,10 +105,7 @@ pub fn render_item_view<'a>(
         .filter(|item| showing.filter(item))
         .map(|todo_item|
           smd!(<li
-            on_click={|_| {
-              web_sys::console::log_1(&wasm_bindgen::JsValue::from_str(&format!("completed {}", todo_item.completed)));
-              todo_item.completed = !todo_item.completed;
-            }}
+            on_click={|_| todo_item.completed = !todo_item.completed}
             style={format!(r"
               cursor: pointer;
               user-select: none;
