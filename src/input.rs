@@ -1,9 +1,6 @@
 use smithy::{
   smd,
-  types::{
-    Component,
-    SmithyComponent,
-  },
+  types::SmithyComponent,
 };
 use std::{
   cell::RefCell,
@@ -24,18 +21,18 @@ pub fn render_input<'a>(
   // should be called... parse? format?
   transformer: impl Fn(String) -> String + 'a,
   mut on_enter: impl FnMut(String) + 'a,
-  dom_ref_inner: &'a mut Option<web_sys::HtmlElement>,
+  input_dom_ref: &'a mut Option<web_sys::HtmlElement>,
 ) -> SmithyComponent<'a> {
   smd!(
     post_render={|| {
-      if let Some(el) = &dom_ref_inner {
+      if let Some(el) = &input_dom_ref {
         let el: &web_sys::HtmlInputElement = el.unchecked_ref();
         el.set_value(&*value.borrow());
       }
     }};
     <input
       value={(&*value.borrow()).to_string()}
-      ref={dom_ref_inner}
+      ref={input_dom_ref}
       on_input={|e: &InputEvent| {
         let target = e.target().unwrap();
         let target: web_sys::HtmlInputElement = target.unchecked_into();

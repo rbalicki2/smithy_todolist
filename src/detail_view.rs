@@ -13,18 +13,17 @@ use smithy::{
 };
 use std::{
   cell::RefCell,
-  ops::Deref,
   rc::Rc,
 };
 
 pub fn render_detail_view_page<'a>(
-  mut todo_lists: &'a mut TodoLists,
+  todo_lists: &'a mut TodoLists,
   id: TodoListId,
-  dom_ref_inner: &'a mut Option<web_sys::HtmlElement>,
+  input_dom_ref: &'a mut Option<web_sys::HtmlElement>,
   text_value: &'a mut Rc<RefCell<String>>,
 ) -> SmithyComponent<'a> {
   match todo_lists.get_mut(&id) {
-    Some(todo_list) => render_item_view(todo_list, id, dom_ref_inner, text_value),
+    Some(todo_list) => render_item_view(todo_list, id, input_dom_ref, text_value),
     None => smd!(no todolist with this id),
   }
 }
@@ -32,7 +31,7 @@ pub fn render_detail_view_page<'a>(
 pub fn render_item_view<'a>(
   todo_list: &'a mut TodoList,
   id: TodoListId,
-  dom_ref_inner: &'a mut Option<web_sys::HtmlElement>,
+  input_dom_ref: &'a mut Option<web_sys::HtmlElement>,
   input_text: &'a Rc<RefCell<String>>,
 ) -> SmithyComponent<'a> {
   let todo_list = Rc::new(RefCell::new(todo_list));
@@ -53,7 +52,7 @@ pub fn render_item_view<'a>(
         description,
       });
     },
-    dom_ref_inner,
+    input_dom_ref,
   );
   smd!(
     <h1>{ &todo_list.borrow().name }</h1>

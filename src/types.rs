@@ -60,7 +60,7 @@ pub struct AppState {
   pub current_page: Page,
   // pub todo_lists: Vec<TodoList>,
   pub todo_lists: TodoLists,
-  pub dom_ref_inner: Option<web_sys::HtmlElement>,
+  pub input_dom_ref: Option<web_sys::HtmlElement>,
 }
 
 impl AppState {
@@ -81,7 +81,7 @@ impl AppState {
         );
         map
       }),
-      dom_ref_inner: None,
+      input_dom_ref: None,
     };
     app_state
   }
