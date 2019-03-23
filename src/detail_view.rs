@@ -1,4 +1,5 @@
 use crate::types::{
+  Showing,
   TodoItem,
   TodoList,
   TodoListId,
@@ -21,12 +22,13 @@ pub fn render_detail_view_page<'a>(
   id: TodoListId,
   input_dom_ref: &'a mut Option<web_sys::HtmlElement>,
   text_value: &'a mut Rc<RefCell<String>>,
+  showing: &'a mut Showing,
 ) -> SmithyComponent<'a> {
   smd!(
     <a href="#">Back to list</a>
     {
       match todo_lists.get_mut(&id) {
-        Some(todo_list) => render_item_view(todo_list, input_dom_ref, text_value),
+        Some(todo_list) => render_item_view(todo_list, input_dom_ref, text_value, showing),
         None => smd!(no todolist with this id),
       }
     }
@@ -37,6 +39,7 @@ pub fn render_item_view<'a>(
   todo_list: &'a mut TodoList,
   input_dom_ref: &'a mut Option<web_sys::HtmlElement>,
   input_text: &'a Rc<RefCell<String>>,
+  showing: &'a mut Showing,
 ) -> SmithyComponent<'a> {
   let todo_list = Rc::new(RefCell::new(todo_list));
   let todo_list_2 = todo_list.clone();
@@ -59,7 +62,9 @@ pub fn render_item_view<'a>(
     <h1>{ &todo_list.borrow().name }</h1>
     <ul>
       {
-        todo_list.borrow_mut().items.iter_mut().map(|todo_item|
+        todo_list.borrow_mut().items.iter_mut()
+        .filter(|item| showing.filter(item))
+        .map(|todo_item|
           smd!(<li
             on_click={|_| {
               todo_item.completed = !todo_item.completed;

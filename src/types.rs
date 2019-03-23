@@ -25,6 +25,23 @@ impl std::ops::DerefMut for TodoLists {
 }
 
 #[derive(Debug)]
+pub enum Showing {
+  All,
+  Complete,
+  Incomplete,
+}
+
+impl Showing {
+  pub fn filter(&self, todo_item: &TodoItem) -> bool {
+    match self {
+      Showing::All => true,
+      Showing::Complete => todo_item.completed,
+      Showing::Incomplete => !todo_item.completed,
+    }
+  }
+}
+
+#[derive(Debug)]
 pub enum Page {
   Home,
   TodoListDetail(
@@ -32,6 +49,7 @@ pub enum Page {
       TodoListId,
       Option<web_sys::HtmlElement>,
       Rc<RefCell<String>>,
+      Showing,
     ),
   ),
 }
@@ -39,7 +57,12 @@ pub enum Page {
 impl Page {
   pub fn handle_hash_change(&mut self) {
     if let Some(todo_list_id) = get_current_todo_list_id_from_hash() {
-      *self = Page::TodoListDetail((todo_list_id, None, Rc::new(RefCell::new("".to_string()))));
+      *self = Page::TodoListDetail((
+        todo_list_id,
+        None,
+        Rc::new(RefCell::new("".to_string())),
+        Showing::All,
+      ));
     } else {
       *self = Page::Home;
     }
