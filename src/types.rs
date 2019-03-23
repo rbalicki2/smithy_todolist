@@ -46,8 +46,6 @@ impl Page {
   }
 }
 
-// TODO wrap these id's in a newtype
-type TodoItemId = usize;
 #[derive(Debug)]
 pub struct TodoItem {
   pub completed: bool,
