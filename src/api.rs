@@ -20,8 +20,6 @@ pub fn fetch_todo_lists() -> impl Future<Item = TodoLists, Error = ()> {
 
   let request = Request::new_with_str_and_init(BASE_URL, &opts).unwrap();
 
-  request.headers().set("Accept", "application/json").unwrap();
-
   let window = web_sys::window().unwrap();
   let request_promise = window.fetch_with_request(&request);
 
@@ -41,4 +39,24 @@ pub fn fetch_todo_lists() -> impl Future<Item = TodoLists, Error = ()> {
     })
     .map_err(|_| ());
   future
+}
+
+pub fn save_todo_lists(todo_lists: &TodoLists) {
+  let mut opts = RequestInit::new();
+  opts.method("POST");
+  opts.mode(RequestMode::Cors);
+
+  let request = Request::new_with_str_and_init(BASE_URL, &opts).unwrap();
+  request
+    .headers()
+    .set("Content-Type", "application/json")
+    .unwrap();
+
+  let mut request_init = RequestInit::new();
+  request_init.body(Some(&wasm_bindgen::JsValue::from_str(
+    &serde_json::to_string(todo_lists).unwrap(),
+  )));
+
+  let window = web_sys::window().unwrap();
+  let _ = window.fetch_with_request_and_init(&request, &request_init);
 }
