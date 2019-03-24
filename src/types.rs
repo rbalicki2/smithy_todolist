@@ -37,6 +37,10 @@ impl TodoLists {
       0
     }
   }
+
+  pub fn new() -> TodoLists {
+    TodoLists(HashMap::new())
+  }
 }
 
 #[derive(Debug, Eq, PartialEq, Clone)]

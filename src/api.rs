@@ -36,8 +36,8 @@ pub fn fetch_todo_lists() -> impl Future<Item = TodoLists, Error = ()> {
     })
     .map(|json| {
       // Use serde to parse the JSON into a struct.
-      let post: TodoLists = json.into_serde().unwrap();
-      post
+      let todo_lists_result = json.into_serde();
+      todo_lists_result.unwrap_or_else(|_| TodoLists::new())
     })
     .map_err(|_| ());
   future
