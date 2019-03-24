@@ -30,7 +30,7 @@ pub fn render(app_state: AppState) -> impl smithy::types::Component {
         ),
         (PromiseState::Success(ref mut todo_lists), &mut Page::TodoListDetail((ref id, ref mut input_dom_ref, ref mut input_text, ref mut showing))) => {
           detail_view::render_detail_view_page(todo_lists, *id, input_dom_ref, input_text, showing)
-        }
+        },
         (PromiseState::Pending, _) => smd!(Fetching),
         (PromiseState::Error(_), _) => smd!(Something went wrong fetching the todo lists! Is the server running?),
       }
