@@ -28,6 +28,16 @@ impl std::ops::DerefMut for TodoLists {
   }
 }
 
+impl TodoLists {
+  pub fn get_next_id(&self) -> TodoListId {
+    if let Some(id) = self.keys().max() {
+      id + 1
+    } else {
+      0
+    }
+  }
+}
+
 #[derive(Debug, Eq, PartialEq, Clone)]
 pub enum Showing {
   All,
@@ -45,17 +55,13 @@ impl Showing {
   }
 }
 
+pub type Ref = Option<web_sys::HtmlElement>;
+pub type InputString = Rc<RefCell<String>>;
+
 #[derive(Debug)]
 pub enum Page {
-  Home,
-  TodoListDetail(
-    (
-      TodoListId,
-      Option<web_sys::HtmlElement>,
-      Rc<RefCell<String>>,
-      Showing,
-    ),
-  ),
+  Home((Ref, InputString)),
+  TodoListDetail((TodoListId, Ref, InputString, Showing)),
 }
 
 impl Page {
@@ -68,7 +74,7 @@ impl Page {
         Showing::All,
       ));
     } else {
-      *self = Page::Home;
+      *self = Page::Home((None, Rc::new(RefCell::new("".into()))));
     }
   }
 }
@@ -85,6 +91,15 @@ pub struct TodoList {
   pub items: Vec<TodoItem>,
 }
 
+impl TodoList {
+  pub fn new(name: String) -> TodoList {
+    TodoList {
+      name,
+      items: vec![],
+    }
+  }
+}
+
 pub struct AppState {
   pub current_page: Page,
   // pub todo_lists: Vec<TodoList>,
@@ -94,14 +109,14 @@ pub struct AppState {
 impl AppState {
   pub fn new() -> AppState {
     // TODO should I combine these steps?
-    let mut current_page = Page::Home;
+    let mut current_page = Page::Home((None, Rc::new(RefCell::new("".into()))));
     current_page.handle_hash_change();
     let app_state = AppState {
       current_page,
       todo_lists: TodoLists({
         let mut map = HashMap::new();
         map.insert(
-          0,
+          1,
           TodoList {
             name: "Housework".into(),
             items: vec![TodoItem {
@@ -111,7 +126,7 @@ impl AppState {
           },
         );
         map.insert(
-          1,
+          2,
           TodoList {
             name: "Programming".into(),
             items: vec![
