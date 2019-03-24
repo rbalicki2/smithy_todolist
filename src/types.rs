@@ -3,6 +3,7 @@ use serde_derive::{
   Deserialize,
   Serialize,
 };
+use smithy::types::UnwrappedPromise;
 use std::{
   cell::RefCell,
   collections::HashMap,
@@ -100,10 +101,11 @@ impl TodoList {
   }
 }
 
+pub type UnwrappedTodoListsApiRequest = UnwrappedPromise<TodoLists, ()>;
+
 pub struct AppState {
   pub current_page: Page,
-  // pub todo_lists: Vec<TodoList>,
-  pub todo_lists: TodoLists,
+  pub todo_lists_api_request: UnwrappedTodoListsApiRequest,
 }
 
 impl AppState {
@@ -113,36 +115,7 @@ impl AppState {
     current_page.handle_hash_change();
     let app_state = AppState {
       current_page,
-      todo_lists: TodoLists({
-        let mut map = HashMap::new();
-        map.insert(
-          1,
-          TodoList {
-            name: "Housework".into(),
-            items: vec![TodoItem {
-              completed: false,
-              description: "Do the dishes".into(),
-            }],
-          },
-        );
-        map.insert(
-          2,
-          TodoList {
-            name: "Programming".into(),
-            items: vec![
-              TodoItem {
-                completed: true,
-                description: "Learn Rust".into(),
-              },
-              TodoItem {
-                completed: false,
-                description: "Build a site with Smithy".into(),
-              },
-            ],
-          },
-        );
-        map
-      }),
+      todo_lists_api_request: smithy::unwrapped_promise_from_future(crate::api::fetch_todo_lists()),
     };
     app_state
   }

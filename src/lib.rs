@@ -12,6 +12,7 @@ use web_sys::{
   Element,
 };
 
+mod api;
 mod app;
 mod detail_view;
 mod home;

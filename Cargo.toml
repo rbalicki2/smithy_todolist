@@ -25,7 +25,16 @@ web-sys = { version = "0.3.5", features = [
   # elements
   "HtmlInputElement",
 
+  # For fetching
+  "Headers",
+  "Request",
+  "RequestInit",
+  "RequestMode",
+  "Response",
 ] }
+basic_futures = { path = "../basic_futures" }
+futures = "0.1.25"
+wasm-bindgen-futures = "0.3.5"
 js-sys = "0.3.5"
 serde = "1.0.84"
 serde_derive = "1.0.84"
