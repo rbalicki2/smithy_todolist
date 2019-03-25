@@ -21,10 +21,7 @@ mod types;
 mod util;
 
 #[wasm_bindgen]
-pub fn start(div_id: String) {
-  let doc: Document = util::get_document();
-  let root_element: Element = doc.get_element_by_id(&div_id).unwrap();
-
+pub fn start(root_element: web_sys::Element) {
   let app_state = types::AppState::new();
   let app = app::render(app_state);
 
