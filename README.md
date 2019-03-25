@@ -2,6 +2,8 @@
 
 > An example app that uses Smithy to build a todolist that talks to an API.
 
+See it in action [here](https://http://smithy-todolist.robertbalicki.com)!
+
 ## How to install and run locally
 
 Clone the following repositories into subfolders of the same folder:
