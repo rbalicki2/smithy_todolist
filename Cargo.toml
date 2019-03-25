@@ -1,5 +1,5 @@
 [package]
-name = "smithy_site_routing"
+name = "smithy_todolist"
 version = "0.1.0"
 authors = ["Robert Balicki <robert.balicki@gmail.com>"]
 edition = "2018"
@@ -9,17 +9,17 @@ crate-type = ["cdylib"]
 
 [dependencies]
 wasm-bindgen = { version = "< 0.2.39", features = ["nightly", "serde-serialize"] }
-smithy = { path = "../smithy/crates/smithy", features = [
+smithy = { git = "https://github.com/rbalicki2/smithy", features = [
   "mouse-events",
   "input-events",
   # "debug-logs",
 ] }
 web-sys = { version = "0.3.5", features = [
-  "console",
-  "Document",
-  "DocumentFragment",
+  # "console",
+  # "Document",
+  # "DocumentFragment",
   "Element",
-  "Window",
+  # "Window",
   "Location",
 
   # elements
@@ -32,7 +32,7 @@ web-sys = { version = "0.3.5", features = [
   "RequestMode",
   "Response",
 ] }
-basic_futures = { path = "../basic_futures" }
+basic_futures = { git = "https://github.com/rbalicki2/basic_futures" }
 futures = "0.1.25"
 wasm-bindgen-futures = "0.3.5"
 js-sys = "0.3.5"
@@ -42,4 +42,4 @@ serde_json = "1.0.34"
 lazy_static = "1.2.0"
 
 [replace]
-"proc-macro2:0.4.27" = { path = "../smithy/crates/proc-macro2" }
+"proc-macro2:0.4.27" = { git = "https://github.com/rbalicki2/smithy" }

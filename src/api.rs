@@ -11,7 +11,7 @@ use web_sys::{
   Response,
 };
 
-const BASE_URL: &'static str = "http://localhost:3000";
+const BASE_URL: &'static str = "https://smithy-todolists.herokuapp.com";
 
 pub fn fetch_todo_lists() -> impl Future<Item = TodoLists, Error = ()> {
   let mut opts = RequestInit::new();
