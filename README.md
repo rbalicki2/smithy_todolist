@@ -14,7 +14,7 @@ Clone the following repositories into subfolders of the same folder:
 
 ### Start the server
 
-In the `smithy_todo_list_server`, run
+In the `smithy_todo_list_server` folder, run
 
 ```sh
 yarn
