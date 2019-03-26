@@ -38,16 +38,25 @@ pub fn render_home_page<'a>(
   );
 
   smd!(
-    <h1>Todo Lists</h1>
-    <ul>
-      {
-        todo_lists.borrow().iter().map(|(id, todo_list)| {
-          smd!(<li>
-            <a href={format!("#{}", id)}>{&todo_list.name}</a>
-          </li>)
-        }).collect::<Vec<SmithyComponent>>()
-      }
-    </ul>
-    { &mut input }
+    <div class="row text-center">
+      <div class="col">
+        <h1>Todo List Dashboard</h1>
+      </div>
+    </div>
+    <div class="row">
+      <ul>
+        {
+          todo_lists.borrow().iter().map(|(id, todo_list)| {
+            smd!(<li>
+              <a href={format!("#{}", id)}>{&todo_list.name}</a>
+            </li>)
+          }).collect::<Vec<SmithyComponent>>()
+        }
+      </ul>
+    </div>
+    <div class="row">
+      <div class="col-sm-5">Create a new todo list:</div>
+      <div class="col-sm-6">{ &mut input }</div>
+    </div>
   )
 }

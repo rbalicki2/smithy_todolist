@@ -32,6 +32,7 @@ pub fn render_input<'a>(
     }};
     <input
       value={(&*value.borrow()).to_string()}
+      class="form-control"
       ref={input_dom_ref}
       on_input={|e: &InputEvent| {
         let target = e.target().unwrap();
