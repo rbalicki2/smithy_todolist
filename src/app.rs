@@ -42,12 +42,15 @@ pub fn render(app_state: AppState) -> impl smithy::types::Component {
         flex-direction: row;
         justify-content: center;
       }
+
+      h1 {
+        margin-bottom: 10px;
+      }
     "}</style>
     <div class="container" style={r"
       width: 80vw;
       padding: 10vw;
       margin-top: 10vw;
-      border: 1px solid #F0F0F0;
       background-color: #FAFAFA;
       box-shadow: 0 30px 25px -25px rgba(7,22,30,.15), 0 0 30px 0 rgba(7,22,30,.1);
       font-family: mainFont;

@@ -79,30 +79,38 @@ pub fn render_item_view<'a>(
         border: none;
         cursor: pointer;
       }
+      .detail_view_button:not(:first-child) {
+        margin-left: 10px;
+      }
       .detail_view_button:focus {
         outline: 0;
       }
     "}</style>
     <h1 class="center">{ &todo_list.borrow().name }</h1>
-    <button
-      on_click={|_| *showing = Showing::Complete}
-      class={get_button_class(Showing::Complete)}
-    >
-      Complete
-    </button>
-    <button
-      on_click={|_| *showing = Showing::Incomplete}
-      class={get_button_class(Showing::Incomplete)}
-    >
-      Incomplete
-    </button>
-    <button
-      on_click={|_| *showing = Showing::All}
-      class={get_button_class(Showing::All)}
-    >
-      All
-    </button>
-    <ul>
+    <div class="col" style="margin-bottom: 5px;">
+      <a
+        on_click={|_| *showing = Showing::Complete}
+        class={get_button_class(Showing::Complete)}
+        tabindex="0"
+      >
+        Complete
+      </a>
+      <a
+        on_click={|_| *showing = Showing::Incomplete}
+        class={get_button_class(Showing::Incomplete)}
+        tabindex="0"
+      >
+        Incomplete
+      </a>
+      <a
+        on_click={|_| *showing = Showing::All}
+        class={get_button_class(Showing::All)}
+        tabindex="0"
+      >
+        All
+      </a>
+    </div>
+    <ul class="col">
       {
         todo_list.borrow_mut().items.iter_mut()
         .filter(|item| showing.filter(item))
@@ -120,6 +128,6 @@ pub fn render_item_view<'a>(
         ).collect::<Vec<SmithyComponent>>()
       }
     </ul>
-    { &mut input }
+    <div class="col">{ &mut input }</div>
   )
 }

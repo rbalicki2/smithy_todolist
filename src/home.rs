@@ -43,7 +43,7 @@ pub fn render_home_page<'a>(
     </div>
     <h1 class="center">My Dashboard</h1>
     <div class="row">
-      <ul style="width: 100%;">
+      <ul style="width: 100%;" class="col">
         {
           todo_lists.borrow().iter().map(|(id, todo_list)| {
             smd!(<li>
