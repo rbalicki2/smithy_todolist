@@ -55,7 +55,7 @@ pub fn render_home_page<'a>(
       </ul>
     </div>
     <div class="row">
-      <div class="col-sm-5">Create a new todo list:</div>
+      <div class="col-sm-6">Create a new todo list:</div>
       <div class="col-sm-6">{ &mut input }</div>
     </div>
   )

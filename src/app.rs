@@ -27,21 +27,46 @@ pub fn render(app_state: AppState) -> impl smithy::types::Component {
       &mut current_page.handle_hash_change();
     }};
     <link rel="stylesheet" type="text/css" href={BOOTSTRAP_URL} />
-    <div class="container">
+    <style type="text/css">{ r"
+      @font-face {
+        font-family: mainFont;
+        src: url(https://d32dj4qqmd0v7v.cloudfront.net/fonts/MaisonNeue/MaisonNeue-Medium.woff2);
+      }
+
+      .save_button {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        margin-top: 5vw;
+      }
+    "}</style>
+    <div class="container" style={r"
+      width: 80vw;
+      padding: 10vw;
+      margin-top: 10vw;
+      border: 1px solid #F0F0F0;
+      background-color: #FAFAFA;
+      box-shadow: 0 30px 25px -25px rgba(7,22,30,.15), 0 0 30px 0 rgba(7,22,30,.1);
+      font-family: mainFont;
+    "}>
       {
         match (&mut *todo_lists_api_request.borrow_mut(), &mut current_page) {
           (PromiseState::Success(ref mut todo_lists), &mut Page::Home(ref mut home_info)) => smd!(
             { home::render_home_page(todo_lists, home_info) }
-            <div><button on_click={|_| crate::api::save_todo_lists(todo_lists)} class="btn btn-primary">
-              Save Todo Lists
-            </button></div>
+            <div class="save_button">
+              <button on_click={|_| crate::api::save_todo_lists(todo_lists)} class="btn btn-primary">
+                Save Todo Lists
+              </button>
+            </div>
           ),
           (PromiseState::Success(ref mut todo_lists), &mut Page::TodoListDetail((ref id, ref mut input_dom_ref, ref mut input_text, ref mut showing))) => {
             smd!(
               { detail_view::render_detail_view_page(todo_lists, *id, input_dom_ref, input_text, showing) }
-              <div><button on_click={|_| crate::api::save_todo_lists(todo_lists)}>
-                Save Todo Lists
-              </button></div>
+              <div class="save_button">
+                <button on_click={|_| crate::api::save_todo_lists(todo_lists)} class="btn btn-primary">
+                  Save Todo Lists
+                </button>
+              </div>
             )
           },
           (PromiseState::Pending, _) => smd!(Fetching),
