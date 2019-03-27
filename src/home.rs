@@ -38,13 +38,12 @@ pub fn render_home_page<'a>(
   );
 
   smd!(
-    <div class="row text-center">
-      <div class="col">
-        <h1>Todo List Dashboard</h1>
-      </div>
+    <div class="center">
+      <a href="#">{'\u{00a0}'}</a>
     </div>
+    <h1 class="center">My Dashboard</h1>
     <div class="row">
-      <ul>
+      <ul style="width: 100%;">
         {
           todo_lists.borrow().iter().map(|(id, todo_list)| {
             smd!(<li>
@@ -54,7 +53,7 @@ pub fn render_home_page<'a>(
         }
       </ul>
     </div>
-    <div class="center">Create a new todo list:</div>
+    <div class="center">Create a new list:</div>
     <div class="center">{ &mut input }</div>
   )
 }
