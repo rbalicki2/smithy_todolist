@@ -34,10 +34,13 @@ pub fn render(app_state: AppState) -> impl smithy::types::Component {
       }
 
       .save_button {
+        margin-top: 5vw;
+      }
+
+      .center {
         display: flex;
         flex-direction: row;
         justify-content: center;
-        margin-top: 5vw;
       }
     "}</style>
     <div class="container" style={r"
@@ -53,7 +56,7 @@ pub fn render(app_state: AppState) -> impl smithy::types::Component {
         match (&mut *todo_lists_api_request.borrow_mut(), &mut current_page) {
           (PromiseState::Success(ref mut todo_lists), &mut Page::Home(ref mut home_info)) => smd!(
             { home::render_home_page(todo_lists, home_info) }
-            <div class="save_button">
+            <div class="save_button center">
               <button on_click={|_| crate::api::save_todo_lists(todo_lists)} class="btn btn-primary">
                 Save Todo Lists
               </button>
@@ -62,7 +65,7 @@ pub fn render(app_state: AppState) -> impl smithy::types::Component {
           (PromiseState::Success(ref mut todo_lists), &mut Page::TodoListDetail((ref id, ref mut input_dom_ref, ref mut input_text, ref mut showing))) => {
             smd!(
               { detail_view::render_detail_view_page(todo_lists, *id, input_dom_ref, input_text, showing) }
-              <div class="save_button">
+              <div class="save_button center">
                 <button on_click={|_| crate::api::save_todo_lists(todo_lists)} class="btn btn-primary">
                   Save Todo Lists
                 </button>

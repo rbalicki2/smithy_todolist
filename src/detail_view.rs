@@ -25,7 +25,9 @@ pub fn render_detail_view_page<'a>(
   showing: &'a mut Showing,
 ) -> SmithyComponent<'a> {
   smd!(
-    <a href="#">Back to list</a>
+    <div class="center">
+      <a href="#">{"« "} Back to Dashboard</a>
+    </div>
     {
       match todo_lists.get_mut(&id) {
         Some(todo_list) => render_item_view(todo_list, input_dom_ref, text_value, showing),
@@ -73,6 +75,7 @@ pub fn render_item_view<'a>(
         text-decoration: underline;
       }
       .detail_view_button {
+        background: none;
         border: none;
         cursor: pointer;
       }
@@ -80,7 +83,7 @@ pub fn render_item_view<'a>(
         outline: 0;
       }
     "}</style>
-    <h1>{ &todo_list.borrow().name }</h1>
+    <h1 class="center">{ &todo_list.borrow().name }</h1>
     <button
       on_click={|_| *showing = Showing::Complete}
       class={get_button_class(Showing::Complete)}
