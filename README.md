@@ -11,6 +11,7 @@ Clone the following repositories into subfolders of the same folder:
 * `git@github.com:rbalicki2/smithy_todolist.git` (this one)
 * `git@github.com:rbalicki2/smithy_todolist_server.git`
 * `git@github.com:rbalicki2/smithy-app-server`
+* `git@github.com:rbalicki2/smithy`
 
 ### Start the server
 
